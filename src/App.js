@@ -41,8 +41,10 @@ export default class App extends Component {
 
   render() {
     var spotifyUrl = "https://accounts.spotify.com/authorize?client_id=8bd399434dcf455eb66fdb500adb7288&";
-    spotifyUrl += "redirect_uri=" + encodeURIComponent("http://spotify-soundcloud.dev/callback");
+    spotifyUrl += "redirect_uri=" + encodeURIComponent(window.location.toString().split("#")[0]);
     spotifyUrl += "&scope=user-read-private%20user-read-email%20playlist-read-private&response_type=token&state=123";
+    //<span className="playlist-name">{playlist.name}</span>
+
     if(this.state.playlists){
       return <div className="home">
         <a className="step step-2">Connect to SoundCloud </a>
@@ -50,7 +52,6 @@ export default class App extends Component {
         {_.map(this.state.playlists, (playlist) => {
           return <a href={playlist.tracks.href} playlist={playlist} onClick={this.handleClick.bind(this)} className="playlist">
             <img className="playlist-image" src={playlist.images[0].url} />
-            <span className="playlist-name">{playlist.name}</span>
           </a>
         })}
       </div>
