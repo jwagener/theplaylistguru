@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Sample App</title>
+    <style>
+    html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin: 0; padding: 0; border: 0; outline: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit;}
+
+    table {border-collapse: collapse; border-spacing: 0;}
+    caption, th, td {text-align: left; font-weight: normal;}
+    form legend {display: none;}
+    blockquote:before, blockquote:after, q:before, q:after {content: "";}
+    blockquote, q {quotes: "" "";}
+    ol, ul {list-style: none;}
+    hr {display: none; visibility: hidden;}
+
+    :focus {outline: 0;}
+
+    * {
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+    }
+
+    .cf:before,
+    .cf:after {
+        content: " "; /* 1 */
+        display: table; /* 2 */
+    }
+
+    .cf:after {
+        clear: both;
+    }
+
+    .cf {
+        *zoom: 1;
+    }
+
+
+      body {
+        background-image: linear-gradient(150deg, #84bd00,#84bd00 50%, #ff7700 50%, #ff7700);
+        /*background-image: linear-gradient(90deg, #84bd00,#84bd00 20%, #ff7700 20%, #ff7700);
+        background-image: linear-gradient(90deg, #84bd00, #84bd00 33.33%, #ff7700 33.33%, #ff7700 66.66%, #84bd00 66.66%, #84bd00 100%);
+        background: repeating-linear-gradient(135deg,
+          #84bd00, #84bd00 .25em,
+          #ff7700, #ff7700 .75em
+        );*/
+        width: 100vw;
+        height: 100vh;
+        font-size: 16px;
+        padding: 4rem;
+        font-family: "Avenir";
+      }
+
+      body, a:link, a:visited, a:hover {
+        color: white;
+      }
+
+      .home {
+        font-size: 24px;
+        width: 400px;
+        margin: auto;
+      }
+
+      .step {
+        display: block;
+        margin: 1rem;
+      }
+
+      .step:before {
+        content: '1';
+        border-radius: 50%;
+        background-color: white;
+        color: #84bd00;
+        width: 2rem;
+        height: 2rem;
+        display: inline-block;
+        margin-right: 1rem;
+        text-align: center;
+      }
+
+      .step-2:before {
+        content: '2';
+      }
+      .step-3:before {
+        content: '3';
+      }
+
+      .playlist-name {
+        font-size: 16px;
+        line-height: 3em;
+        white-space: nowrap;
+        max-width: 200px;
+        display: block;
+        text-overflow: ellipsis;
+      }
+
+      .playlist-name:before {
+        content: '♫';
+        display: inline-block;
+        margin-right: 1rem;
+        font-weight: bold;
+      }
+
+.playlist-image {
+  width: 10rem;
+  height: auto;
+  margin: 1rem;
+}
+
+    </style>
+  </head>
+  <body>
+    <div id='root'>
+    </div>
+    <script src="/static/bundle.js"></script>
+  </body>
+</html>
