@@ -1,7 +1,9 @@
 <!doctype html>
 <html>
   <head>
-    <title>Sample App</title>
+    <title>Spotify || SoundCloud</title>
+    <meta name=viewport content="width=device-width, initial-scale=1">
+
     <style>
     html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin: 0; padding: 0; border: 0; outline: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit;}
 
@@ -51,13 +53,19 @@
         font-family: "Avenir";
       }
 
+      @media (max-width: 600px) {
+        body {
+          padding: 0.5rem;
+        }
+      }
+
       body, a:link, a:visited, a:hover {
         color: white;
       }
 
       .home {
         font-size: 24px;
-        width: 400px;
+        max-width: 400px;
         margin: auto;
       }
 
@@ -87,25 +95,48 @@
 
       .playlist-name {
         font-size: 16px;
-        line-height: 3em;
-        white-space: nowrap;
-        max-width: 200px;
+        color: #333;
         display: block;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
         text-overflow: ellipsis;
       }
 
       .playlist-name:before {
         content: '♫';
         display: inline-block;
-        margin-right: 1rem;
+        margin-right: 0.4rem;
         font-weight: bold;
       }
 
-.playlist-image {
-  width: 10rem;
-  height: auto;
-  margin: 1rem;
-}
+      .playlist-image {
+        width: 100%;
+        height: auto;
+      }
+
+      .playlist {
+        opacity: 0.4;
+        text-decoration: none;
+
+      }
+
+      .playlist-selected {
+        opacity: 1.0;
+      }
+
+      .playlist-wrapper {
+        display: inline-block;
+        width: 10rem;
+        margin: 1rem;
+      }
+      .step-done {
+         text-decoration: line-through;
+      }
+
+      p {
+        padding: 1rem;
+      }
 
     </style>
   </head>
