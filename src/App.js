@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-//var fetchUrl = require("fetch").fetchUrl;
-//import fetchUrl from 'fetch'
-//import ajax from 'ajax';
 var request = require('superagent');
 import _ from 'underscore';
 
