@@ -28,13 +28,24 @@ export default class App extends Component {
 
   render() {
     var spotifyUrl = "https://accounts.spotify.com/authorize?client_id=8bd399434dcf455eb66fdb500adb7288&";
-    spotifyUrl += "redirect_uri=" + encodeURIComponent(window.location.toString().split("#")[0]);
+    spotifyUrl += "redirect_uri=" + encodeURIComponent(window.location.origin) + '/';
     spotifyUrl += "&scope=user-read-private%20user-read-email%20playlist-read-private&response_type=token&state=123";
+
+    var soundcloudUrl = "https://soundcloud.com/connect?response_type=token&scope=non-expiring&";
+    if(window.location.origin === "http://spotify-soundcloud.dev") {
+      soundcloudUrl += "client_id=d3a34949dd2df66660737dcc0ea79336&";
+    }else{
+      soundcloudUrl += "client_id=2a29b786d884f77413df3e163c63ea7e&";
+    }
+    soundcloudUrl += "redirect_uri=" + encodeURIComponent(window.location.origin) + '/&';
+
+
+    //      <div className="logo">	&#127820; 	&#x1f34c; sdf</div>
 
     return <div className="home">
       <p>Get your <b>Spotify</b> playlists on <b>SoundCloud Go</b>!</p>
       <a className={"step step-1 " + (this.state.playlists ? "step-done" : "")} href={spotifyUrl}>Connect to Spotify.</a>
-      <a className={"step step-2 " + (this.props.soundcloudToken ? "step-done" : "")} href="javascript:SC.connect()">Connect to SoundCloud.</a>
+      <a className={"step step-2 " + (this.props.soundcloudToken ? "step-done" : "")} href={soundcloudUrl}>Connect to SoundCloud.</a>
       <a className="step step-3">Pick your playlists:</a>
       {_.map(this.state.playlists || [], (playlist) => {
         return <Playlist key={playlist.id} spotifyToken={this.props.spotifyToken} soundcloudToken={this.props.soundcloudToken} playlist={playlist} />
