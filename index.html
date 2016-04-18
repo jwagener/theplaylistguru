@@ -39,7 +39,8 @@
 
 
       body {
-        background-image: linear-gradient(150deg, #84bd00,#84bd00 50%, #ff7700 50%, #ff7700);
+        /*background-image: linear-gradient(150deg, #84bd00,#84bd00 50%, #ff7700 50%, #ff7700);*/
+        background-color: #ffdc01;
         /*background-image: linear-gradient(90deg, #84bd00,#84bd00 20%, #ff7700 20%, #ff7700);
         background-image: linear-gradient(90deg, #84bd00, #84bd00 33.33%, #ff7700 33.33%, #ff7700 66.66%, #84bd00 66.66%, #84bd00 100%);
         background: repeating-linear-gradient(135deg,
@@ -60,7 +61,7 @@
       }
 
       body, a:link, a:visited, a:hover {
-        color: white;
+        color: #333;
       }
 
       .home {
@@ -77,8 +78,8 @@
       .step:before {
         content: '1';
         border-radius: 50%;
-        background-color: white;
-        color: #84bd00;
+        background-color: #333;
+        color: #ffdc01;
         width: 2rem;
         height: 2rem;
         display: inline-block;
@@ -115,10 +116,52 @@
         height: auto;
       }
 
+      .playlist-ratio {
+        font-size: 18px;
+        position: absolute;
+        right: 16px;
+        bottom: 14px;
+        color: #84bd00;
+      }
+
+      .playlist-spotify-track-count {
+        color: #84bd00;
+      }
+
+      .playlist-soundcloud-track-count {
+        color: #ff7700;
+      }
+
       .playlist {
         opacity: 0.4;
         text-decoration: none;
+        position: relative;
+      }
 
+      .playlist:hover:before {
+        content: 'Create on SoundCloud';
+        position: absolute;
+        top: -90px; bottom: 0; left: 0; right: 0;
+        text-align: center;
+        color:  white;
+        text-shadow: 1px 1px #333;
+      }
+
+      .playlist-imported:hover:before {
+        content: 'Open on SoundCloud';
+        position: absolute;
+        top: -90px; bottom: 0; left: 0; right: 0;
+        text-align: center;
+        color:  white;
+        text-shadow: 1px 1px #333;
+      }
+
+      .playlist:hover .playlist-image {
+        filter: darken(10.0);
+      }
+
+      .playlist:hover {
+        opacity: 0.9;
       }
 
       .playlist-selected {
@@ -139,6 +182,15 @@
       }
 
     </style>
+
+    <script src="https://connect.soundcloud.com/sdk/sdk-3.0.0.js"></script>
+    <script>
+      if(window.location.origin === "http://spotify-soundcloud.dev") {
+        SC.initialize({client_id: 'd3a34949dd2df66660737dcc0ea79336', redirect_uri: 'http://spotify-soundcloud.dev/'});
+      }else{
+        SC.initialize({client_id: '2a29b786d884f77413df3e163c63ea7e', redirect_uri: 'https://spotify-soundcloud.herokuapp.com/'});
+      }
+    </script>
   </head>
   <body>
     <div id='root'>

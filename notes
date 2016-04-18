@@ -1,0 +1,71 @@
+at 1-234617-3207-a064dad6aed93c5da0
+
+https://api.soundcloud.com/resolve?client_id=2a29b786d884f77413df3e163c63ea7e&url=https://soundcloud.com/bjork
+
+joy-division-3: 141391127
+thesmiths: 141390830
+bjork: 3208468
+
+
+$.ajax({
+  url: "https://api-v2.soundcloud.com/users/3208468/tracks?client_id=02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea&app_version=1460720994&limit=200",
+  type: "GET",
+  beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'OAuth 1-138878-3207-ae00655c49a70b9fe3');},
+  success: (res) => {
+    console.log(res);
+  }
+});
+
+tracks = ;
+function fetchTracks(url){
+  $.ajax({
+    url: url,
+    type: "GET",
+    beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'OAuth 1-138878-3207-ae00655c49a70b9fe3');},
+    success: (res) => {
+      console.log(res);
+      _.map(res.collection, (track) => {
+        if(track.publisher_metadata){
+          tracks[track.publisher_metadata.isrc] = track.id;
+        }
+      });
+
+      if(res.next_href){
+        fetchTracks(res.next_href);
+      }
+    }
+  });
+}
+
+fetchTracks('https://api-v2.soundcloud.com/users/3208468/tracks?client_id=02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea&app_version=1460720994&limit=200');
+fetchTracks('https://api-v2.soundcloud.com/users/141391127/tracks?client_id=02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea&app_version=1460720994&limit=200');
+fetchTracks('https://api-v2.soundcloud.com/users/141390830/tracks?client_id=02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea&app_version=1460720994&limit=200');
+
+_.map(tracks, (v,k) => {
+  console.log("" + k + ":" + v);
+});
+
+
+
+beforeSend: function(xhr){xhr.setRequestHeader('X-Test-Header', 'test-value');},
+
+
+$.get("https://api-v2.soundcloud.com/users/3208468/tracks?access_token=1-234617-3207-a064dad6aed93c5da0&client_id=02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea&app_version=1460720994&limit=200").then((res) => {
+  console.log(res)
+});
+
+
+$.get("https://api-v2.soundcloud.com/users/3208468/tracks?client_id=02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea&app_version=1460720994&limit=200").then((res) => {
+  console.log(res)
+});
+
+
+$.get("https://api-v2.soundcloud.com/users/3208468/tracks?offset=255800357&representation=&limit=100&client_id=02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea&app_version=1460720994").then((res) => {
+  console.log(res)
+});
+
+
+
+$.get("https://api-v2.soundcloud.com/users/3208468/tracks?client_id=2a29b786d884f77413df3e163c63ea7e&app_version=1460720994&limit=200").then((res) => {
+  console.log(res)
+});

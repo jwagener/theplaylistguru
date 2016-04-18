@@ -1,47 +1,33 @@
-react-hot-boilerplate
-=====================
+Spotify SoundCloud
 
-The minimal dev environment to enable live-editing React components.
+Workaround
 
-### Usage
+SC.put('/playlists/214784666?oauth_token=1-234617-3207-a064dad6aed93c5da0&bla', {playlist: {tracks: [{id:256814338}]}}).then(function(tracks){console.log(tracks)});
 
-```
-npm install
-npm start
-open http://localhost:3000
-```
 
-Now edit `src/App.js`.  
-Your changes will appear without reloading the browser like in [this video](http://vimeo.com/100010922).
+Exampel Bob Dylan  Melancholy Moods:
+From Spotify: "USSM11600524" / USSM11600524 / on SC: 256814338
 
-### Linting
+ SC.get("/tracks/256814338").then(function(track){
+  console.log(track);
+ });
 
-This boilerplate project includes React-friendly ESLint configuration.
+ SC.initialize({oauth_token: '1-234617-3207-a064dad6aed93c5da0'});
+ SC.get('/me/tracks').then(function(tracks){console.log(tracks)});
 
-```
-npm run lint
-```
 
-### Using `0.0.0.0` as Host
+ SC.post('/playlists', {playlist:{title: 'Track invisible', sharing: 'private', track: [{id: 256814338}]}}).then(function(playlist){
+  console.log("hallo", playlist);
+ });
 
-You may want to change the host in `server.js` and `webpack.config.js` from `localhost` to `0.0.0.0` to allow access from same WiFi network. This is not enabled by default because it is reported to cause problems on Windows. This may also be useful if you're using a VM.
 
-### Missing Features
+SC.get('/playlists/214784666/tracks').then(function(tracks){console.log(tracks)});
+SC.put('/playlists/214784666/tracks/46742486').then(function(tracks){console.log(tracks)});
 
-This boilerplate is purposefully simple to show the minimal configuration for React Hot Loader. For a real project, you'll want to add a separate config for production with hot reloading disabled and minification enabled. You'll also want to add a router, styles and maybe combine dev server with an existing server. This is out of scope of this boilerplate, but you may want to look into [other starter kits](https://github.com/gaearon/react-hot-loader/blob/master/docs/README.md#starter-kits).
 
-### Dependencies
+SC.put('/playlists/214784666', {playlist: {title: "NeuerTitle"}}).then(function(tracks){console.log(tracks)});
 
-* React
-* Webpack
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
-* [babel-loader](https://github.com/babel/babel-loader)
-* [react-hot-loader](https://github.com/gaearon/react-hot-loader)
+ 214784666
 
-### Resources
 
-* [Demo video](http://vimeo.com/100010922)
-* [react-hot-loader on Github](https://github.com/gaearon/react-hot-loader)
-* [Integrating JSX live reload into your workflow](http://gaearon.github.io/react-hot-loader/getstarted/)
-* [Troubleshooting guide](https://github.com/gaearon/react-hot-loader/blob/master/docs/Troubleshooting.md)
-* Ping dan_abramov on Twitter or #reactjs IRC
+SC.put('/playlists/214784666?oauth_token=1-234617-3207-a064dad6aed93c5da0&bla', {playlist: {title: "Neuer Tit"}}).then(function(tracks){console.log(tracks)});

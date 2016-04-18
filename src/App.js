@@ -3,6 +3,8 @@ var request = require('superagent');
 import _ from 'underscore';
 
 var SPOTIFY_TOKEN;
+//var SOUNDCLOUD_TOKEN = '1-234617-3207-a064dad6aed93c5da0';
+//SC.initialize({oauth_token: SOUNDCLOUD_TOKEN});
 
 export default class App extends Component {
   constructor() {
@@ -11,8 +13,13 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    SPOTIFY_TOKEN = window.location.hash.split(/=|&/)[1];
-    if(SPOTIFY_TOKEN){
+    if(this.props.soundcloudToken){
+      console.log("init sc client", this.props);
+      SC.initialize({oauth_token: this.props.soundcloudToken});
+    }
+
+    if(this.props.spotifyToken){
+      SPOTIFY_TOKEN = this.props.spotifyToken; // global state ftw!
       get("https://api.spotify.com/v1/me/playlists", (data) => {
         this.setState({playlists: data.items});
       });
@@ -24,24 +31,17 @@ export default class App extends Component {
     spotifyUrl += "redirect_uri=" + encodeURIComponent(window.location.toString().split("#")[0]);
     spotifyUrl += "&scope=user-read-private%20user-read-email%20playlist-read-private&response_type=token&state=123";
 
-    if(this.state.playlists){
-      return <div className="home">
-        <p><b>Spotify - SoundCloud</b> lets you take your playlists from Spotify to SoundCloud. That's it.</p>
-        <a className="step step-1 step-done" href={spotifyUrl}>Connect to Spotify </a>
-        <a className="step step-2">Connect to SoundCloud </a>
-        <a className="step step-3">Pick your playlists.</a>
-        {_.map(this.state.playlists, (playlist) => {
-          return <Playlist key={playlist.id} playlist={playlist} />
-        })}
-
-      </div>
-    }
     return <div className="home">
-      <p><b>Spotify - SoundCloud</b> lets you take your playlists from Spotify to SoundCloud. That's it.</p>
-      <a className="step step-1" href={spotifyUrl}>Connect to Spotify </a>
-      <a className="step step-2">Connect to SoundCloud </a>
-      <a className="step step-3">Take your playlists with you.</a>
+      <p>Get your <b>Spotify</b> playlists on to <b>SoundCloud Go</b>!</p>
+      <a className={"step step-1 " + (this.props.spotifyToken ? "step-done" : "")} href={spotifyUrl}>Connect to Spotify </a>
+      <a className={"step step-2 " + (this.props.soundcloudToken ? "step-done" : "")} href="javascript:SC.connect()">Connect to SoundCloud.</a>
+      <a className="step step-3">Pick playlists to copy:</a>
+      {_.map(this.state.playlists || [], (playlist) => {
+        return <Playlist key={playlist.id} spotifyToken={this.props.spotifyToken} soundcloudToken={this.props.soundcloudToken} playlist={playlist} />
+      })}
+
     </div>
+
   }
 }
 
@@ -49,25 +49,99 @@ class Playlist extends Component {
   constructor(){
     super(...arguments);
     this.state = {
-      selected: false
+      selected: false,
+      spotifyTrackCount: null,
+      soundcloudTrackCount: null,
+      soundcloudTrackIds: []
     };
   }
 
+  componentDidMount(){
+    var playlist = this.props.playlist;
+    this.lookupTracks(playlist.tracks.href);
+  }
+
+  lookupTracks(spotifyTracksUrl){
+    var soundcloudTrackIds = this.state.soundcloudTrackIds;
+    get(spotifyTracksUrl, (res) => {
+    //  console.log("res", res);
+      var lookupUrl = '/lookup?';
+      this.setState({spotifyTrackCount: res.items.length});
+      var isrc = _.map(res.items, (item) => {
+
+        lookupUrl += 'isrc[]=' + item.track.external_ids.isrc + '&';
+        return item.track.external_ids.isrc;
+      });
+      //console.log(isrc);
+
+      get(lookupUrl, (res2) => {
+        _.map(res2, (v,k) => {
+          if(v){
+            soundcloudTrackIds.push(v);
+          }
+        });
+
+        this.setState({
+          soundcloudTrackCount: soundcloudTrackIds.length,
+          soundcloudTrackIds: soundcloudTrackIds
+        });
+
+      });
+    });
+  }
+
+  createSoundCloudPlaylist() {
+    //alert("creating playlist with ids", this.state.soundcloudTrackIds.join(', '));
+    var playlistObj = {
+      title: this.props.playlist.name,
+      sharing: 'private',
+      description: "A playlist imported with http://spotify-soundCloud.herokuapp.com. Missing tracks..."
+    };
+
+    playlistObj.tracks = _.map(this.state.soundcloudTrackIds, (trackId) => {
+      return {
+        id: trackId
+      };
+    });
+
+    SC.post('/playlists?oauth_token=' + this.props.soundcloudToken + '&bla', {playlist: playlistObj}).then((res) => {
+      console.log("SC Playlist", res);
+      //alert('created playlist')
+      this.setState({soundcloudPlaylist: res})
+    });
+
+  }
+
   handleClick(e){
+    if(this.state.soundcloudPlaylist){ return }
     this.setState({
       selected: !this.state.selected
     });
-    return e.preventDefault();
-    get(e.currentTarget.href, (tracks) => {
-      console.log("tracks", tracks);
-    });
+    if(this.state.soundcloudTrackCount){
+      this.createSoundCloudPlaylist();
+    }else{
+      alert("Looks like SoundCloud does not have any of these tracks yet.")
+    }
     e.preventDefault();
   }
 
   render(){
     var playlist = this.props.playlist;
+    var className= `playlist cf ${this.state.selected ? "playlist-selected" : ""}`;
+    var href = playlist.tracks.href;
+    if(this.state.soundcloudPlaylist){
+      href = this.state.soundcloudPlaylist.permalink_url;
+      className += " playlist-imported"
+    }
+
+
     return <div className="playlist-wrapper">
-      <a href={playlist.tracks.href} playlist={playlist} onClick={this.handleClick.bind(this)} className={`playlist ${this.state.selected ? "playlist-selected" : ""}`}>
+      <a href={href} target="_blank" playlist={playlist} onClick={this.handleClick.bind(this)} className={className}>
+        <span className='playlist-ratio'>
+          <span className="playlist-soundcloud-track-count">{this.state.soundcloudTrackCount || "?"}</span>
+          &nbsp;/&nbsp;
+          <span className="playlist-spotify-track-count">{this.state.spotifyTrackCount}</span>
+        </span>
         <img className="playlist-image" src={playlist.images[0].url} />
         <span className="playlist-name">{playlist.name}</span>
 
