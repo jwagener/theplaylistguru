@@ -106,7 +106,7 @@ class Playlist extends Component {
     var playlistObj = {
       title: this.props.playlist.name,
       sharing: 'private',
-      description: "A playlist imported with http://spotify-soundCloud.herokuapp.com. Missing tracks..."
+      description: "Playlist created with http://spotify-soundcloud.herokuapp.com. List of missing tracks: ..."
     };
 
     playlistObj.tracks = _.map(this.state.soundcloudTrackIds, (trackId) => {
