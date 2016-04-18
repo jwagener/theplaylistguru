@@ -187,6 +187,8 @@
     <script>
       if(window.location.origin === "http://spotify-soundcloud.dev") {
         SC.initialize({client_id: 'd3a34949dd2df66660737dcc0ea79336', redirect_uri: 'http://spotify-soundcloud.dev/'});
+      }else if(window.location.origin === "http://spotify-soundcloud.herokuapp.com") {
+        window.location = "https://spotify-soundcloud.herokuapp.com";
       }else{
         SC.initialize({client_id: '2a29b786d884f77413df3e163c63ea7e', redirect_uri: 'https://spotify-soundcloud.herokuapp.com/'});
       }
