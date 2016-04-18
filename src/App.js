@@ -33,7 +33,7 @@ export default class App extends Component {
 
     return <div className="home">
       <p>Get your <b>Spotify</b> playlists on to <b>SoundCloud Go</b>!</p>
-      <a className={"step step-1 " + (this.props.spotifyToken ? "step-done" : "")} href={spotifyUrl}>Connect to Spotify </a>
+      <a className={"step step-1 " + (this.state.playlists ? "step-done" : "")} href={spotifyUrl}>Connect to Spotify </a>
       <a className={"step step-2 " + (this.props.soundcloudToken ? "step-done" : "")} href="javascript:SC.connect()">Connect to SoundCloud.</a>
       <a className="step step-3">Pick playlists to copy:</a>
       {_.map(this.state.playlists || [], (playlist) => {
