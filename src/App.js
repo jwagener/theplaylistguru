@@ -107,7 +107,8 @@ class Playlist extends Component {
     SC.post('/playlists?oauth_token=' + this.props.soundcloudToken + '&bla', {playlist: playlistObj}).then((res) => {
       console.log("SC Playlist", res);
       //alert('created playlist')
-      this.setState({soundcloudPlaylist: res})
+      this.setState({soundcloudPlaylist: res});
+      window.open(res.permalink_url);
     });
 
   }
