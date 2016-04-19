@@ -59,6 +59,7 @@ export default class App extends Component {
 class Playlist extends Component {
   constructor(){
     super(...arguments);
+    console.log(this.props.playlist);
     this.state = {
       selected: false,
       spotifyTrackCount: null,
@@ -154,7 +155,7 @@ class Playlist extends Component {
           &nbsp;/&nbsp;
           <span className="playlist-spotify-track-count">{this.state.spotifyTrackCount}</span>
         </span>
-        <img className="playlist-image" src={playlist.images[0].url} />
+        <img className="playlist-image" src={playlist.images.length > 0 ? playlist.images[0].url : ""} />
         <span className="playlist-name">{playlist.name}</span>
 
       </a>
