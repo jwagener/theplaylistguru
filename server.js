@@ -7,7 +7,6 @@ var app = express();
 var webpackConfig = require(process.env.NODE_ENV === "production" ? './webpack.config.prod' : './webpack.config.dev');
 app.use(require('webpack-dev-middleware')(webpack(webpackConfig), {noInfo: true, publicPath: webpackConfig.output.publicPath}));
 
-
 app.get('/lookup', function(request, response) {
   var isrcMap = {};
   var args = [];
@@ -15,12 +14,10 @@ app.get('/lookup', function(request, response) {
 
   _.map(request.query.isrc, (isrc) => {
     isrcMap[isrc] = null;
-    args.push('-e');
     args.push(isrc);
   });
 
-  var grep = child_process.spawn('grep', args);
-  console.log('grep', args.join(' '));
+  var grep = child_process.spawn('./lookup.sh', args);
   grep.stdout.on('data', (data) => {
     var lines = data.toString().split("\n");
     _.map(lines, (line) => {
@@ -28,6 +25,7 @@ app.get('/lookup', function(request, response) {
       isrcMap[ parts[0] ] = parts[1];
     })
   });
+
   grep.on('close', (code) => {
     response.json(isrcMap);
   });
@@ -41,6 +39,7 @@ var port = process.env.PORT || 3000;
 app.listen(port, function() {
   console.log('Listening on ' + port + '...');
 });
+
 /*
 new WebpackDevServer(webpack(webpackConfig), {
   publicPath: config.output.publicPath,
