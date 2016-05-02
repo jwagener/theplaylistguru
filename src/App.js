@@ -62,10 +62,12 @@ export default class App extends Component {
     //      <div className="logo">	&#127820; 	&#x1f34c; sdf</div>
 
     return <div className="home">
-      <p>Get your <b>Spotify</b> playlists on <b>SoundCloud Go</b>!</p>
-      <a className={"step step-1 " + (this.state.playlists ? "step-done" : "")} href={spotifyUrl}>Connect to Spotify.</a>
-      <a className={"step step-2 " + (this.props.soundcloudToken ? "step-done" : "")} href={soundcloudUrl}>Connect to SoundCloud.</a>
-      <a className="step step-3">Pick your playlists:</a>
+      <header>
+        <p>Get your <b>Spotify</b> playlists on <b>SoundCloud Go</b>!</p>
+        <a className={"step step-1 " + (this.state.playlists ? "step-done" : "")} href={spotifyUrl}>Connect to Spotify.</a>
+        <a className={"step step-2 " + (this.props.soundcloudToken ? "step-done" : "")} href={soundcloudUrl}>Connect to SoundCloud.</a>
+        <a className="step step-3">Pick your playlists:</a>
+      </header>
       {_.map(this.state.playlists || [], (playlist) => {
         return <Playlist key={playlist.id} spotifyToken={this.props.spotifyToken} soundcloudToken={this.props.soundcloudToken} playlist={playlist} />
       })}
