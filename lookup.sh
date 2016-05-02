@@ -2,5 +2,5 @@
 
 for var in "$@"
 do
-  ./sgrep $var sorted-tracks.csv
+  ./sgrep $var tracks.csv
 done
