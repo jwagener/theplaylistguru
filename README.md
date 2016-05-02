@@ -2,7 +2,7 @@ Spotify SoundCloud
 
 Workaround
 
-SC.put('/playlists/214784666?oauth_token=1-234617-3207-a064dad6aed93c5da0&bla', {playlist: {tracks: [{id:256814338}]}}).then(function(tracks){console.log(tracks)});
+SC.put('/playlists/215092428?oauth_token=1-234617-3207-a064dad6aed93c5da0&bla', {playlist: {tracks: [{id:256814338}]}}).then(function(tracks){console.log(tracks)});
 
 
 Exampel Bob Dylan  Melancholy Moods:

@@ -9,7 +9,9 @@ var SPOTIFY_TOKEN;
 export default class App extends Component {
   constructor() {
     super(...arguments);
-    this.state = {};
+    this.state = {
+      playlistOffset: 0
+    };
   }
 
   componentDidMount() {
@@ -20,10 +22,27 @@ export default class App extends Component {
 
     if(this.props.spotifyToken){
       SPOTIFY_TOKEN = this.props.spotifyToken; // global state ftw!
-      get("https://api.spotify.com/v1/me/playlists", (data) => {
-        this.setState({playlists: data.items});
-      });
+      this.loadPlaylists();
     }
+  }
+
+  loadPlaylists(url){
+    console.log("load playlists");
+    url = url || "https://api.spotify.com/v1/me/playlists?limit=10&offset=" + this.state.playlistOffset;
+    get(url, (data) => {
+      var playlists = this.state.playlists || [];
+      playlists = _.union(playlists, data.items);
+      console.log("playlist", data);
+      this.setState({
+        playlists: playlists,
+        playlistOffset: this.state.playlistOffset + 10,
+        next_href: data.next
+      });
+    });
+  }
+
+  handleMoreClick(){
+    this.loadPlaylists(this.state.next_href)
   }
 
   render() {
@@ -51,6 +70,7 @@ export default class App extends Component {
         return <Playlist key={playlist.id} spotifyToken={this.props.spotifyToken} soundcloudToken={this.props.soundcloudToken} playlist={playlist} />
       })}
 
+      { this.state.next_href ? <button onClick={this.handleMoreClick.bind(this)}>more...</button> : "" }
     </div>
 
   }
@@ -63,7 +83,7 @@ class Playlist extends Component {
     this.state = {
       selected: false,
       spotifyTrackCount: null,
-      soundcloudTrackCount: null,
+      soundcloudTrackCount: "",
       soundcloudTrackIds: []
     };
   }
@@ -76,15 +96,12 @@ class Playlist extends Component {
   lookupTracks(spotifyTracksUrl){
     var soundcloudTrackIds = this.state.soundcloudTrackIds;
     get(spotifyTracksUrl, (res) => {
-    //  console.log("res", res);
       var lookupUrl = '/lookup?';
       this.setState({spotifyTrackCount: res.items.length});
       var isrc = _.map(res.items, (item) => {
-
         lookupUrl += 'isrc[]=' + item.track.external_ids.isrc + '&';
         return item.track.external_ids.isrc;
       });
-      //console.log(isrc);
 
       get(lookupUrl, (res2) => {
         _.map(res2, (v,k) => {
@@ -151,7 +168,7 @@ class Playlist extends Component {
     return <div className="playlist-wrapper">
       <a href={href} target="_blank" playlist={playlist} onClick={this.handleClick.bind(this)} className={className}>
         <span className='playlist-ratio'>
-          <span className="playlist-soundcloud-track-count">{this.state.soundcloudTrackCount || "?"}</span>
+          <span className="playlist-soundcloud-track-count">{this.state.soundcloudTrackCount}</span>
           &nbsp;/&nbsp;
           <span className="playlist-spotify-track-count">{this.state.spotifyTrackCount}</span>
         </span>
