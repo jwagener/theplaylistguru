@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
-var request = require('superagent');
-import _ from 'underscore';
+import React, { Component } from 'react'
+var request = require('superagent')
+import _ from 'underscore'
+import Playlist from './Playlist'
 
-var SPOTIFY_TOKEN;
+//var SPOTIFY_TOKEN;
+window.SPOTIFY_TOKEN = null;
 //var SOUNDCLOUD_TOKEN = '1-234617-3207-a064dad6aed93c5da0';
 //SC.initialize({oauth_token: SOUNDCLOUD_TOKEN});
 
@@ -21,7 +23,7 @@ export default class App extends Component {
     }
 
     if(this.props.spotifyToken){
-      SPOTIFY_TOKEN = this.props.spotifyToken; // global state ftw!
+      window.SPOTIFY_TOKEN = this.props.spotifyToken; // global state ftw!
       this.loadPlaylists();
     }
   }
@@ -88,109 +90,6 @@ export default class App extends Component {
   }
 }
 
-class Playlist extends Component {
-  constructor(){
-    super(...arguments);
-    console.log(this.props.playlist);
-    this.state = {
-      selected: false,
-      spotifyTrackCount: null,
-      soundcloudTrackCount: "",
-      soundcloudTrackIds: []
-    };
-  }
-
-  componentDidMount(){
-    var playlist = this.props.playlist;
-    this.lookupTracks(playlist.tracks.href);
-  }
-
-  lookupTracks(spotifyTracksUrl){
-    var soundcloudTrackIds = this.state.soundcloudTrackIds;
-    get(spotifyTracksUrl, (res) => {
-      var lookupUrl = '/lookup?';
-      this.setState({spotifyTrackCount: res.items.length});
-      var isrc = _.map(res.items, (item) => {
-        lookupUrl += 'isrc[]=' + item.track.external_ids.isrc + '&';
-        return item.track.external_ids.isrc;
-      });
-
-      get(lookupUrl, (res2) => {
-        _.map(res2, (v,k) => {
-          if(v){
-            soundcloudTrackIds.push(v);
-          }
-        });
-
-        this.setState({
-          soundcloudTrackCount: soundcloudTrackIds.length,
-          soundcloudTrackIds: soundcloudTrackIds
-        });
-
-      });
-    });
-  }
-
-  createSoundCloudPlaylist() {
-    //alert("creating playlist with ids", this.state.soundcloudTrackIds.join(', '));
-    var playlistObj = {
-      title: this.props.playlist.name,
-      sharing: 'private',
-      description: "Playlist created with http://spotify-soundcloud.herokuapp.com. List of missing tracks: ..."
-    };
-
-    playlistObj.tracks = _.map(this.state.soundcloudTrackIds, (trackId) => {
-      return {
-        id: trackId
-      };
-    });
-
-    SC.post('/playlists?oauth_token=' + this.props.soundcloudToken + '&bla', {playlist: playlistObj}).then((res) => {
-      console.log("SC Playlist", res);
-      //alert('created playlist')
-      this.setState({soundcloudPlaylist: res});
-      window.open(res.permalink_url);
-    });
-
-  }
-
-  handleClick(e){
-    if(this.state.soundcloudPlaylist){ return }
-    this.setState({
-      selected: !this.state.selected
-    });
-    if(this.state.soundcloudTrackCount){
-      this.createSoundCloudPlaylist();
-    }else{
-      alert("Looks like SoundCloud does not have any of these tracks yet.")
-    }
-    e.preventDefault();
-  }
-
-  render(){
-    var playlist = this.props.playlist;
-    var className= `playlist cf ${this.state.selected ? "playlist-selected" : ""}`;
-    var href = playlist.tracks.href;
-    if(this.state.soundcloudPlaylist){
-      href = this.state.soundcloudPlaylist.permalink_url;
-      className += " playlist-imported"
-    }
-
-
-    return <div className="playlist-wrapper">
-      <a href={href} target="_blank" playlist={playlist} onClick={this.handleClick.bind(this)} className={className}>
-        <span className='playlist-ratio'>
-          <span className="playlist-soundcloud-track-count">{this.state.soundcloudTrackCount}</span>
-          &nbsp;/&nbsp;
-          <span className="playlist-spotify-track-count">{this.state.spotifyTrackCount}</span>
-        </span>
-        <img className="playlist-image" src={playlist.images.length > 0 ? playlist.images[0].url : ""} />
-        <span className="playlist-name">{playlist.name}</span>
-
-      </a>
-    </div>
-  }
-}
 
 function get(url, cb){
   request.get(url).set('Authorization', 'Bearer ' + SPOTIFY_TOKEN ).end((err, res) => {
