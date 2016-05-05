@@ -32,12 +32,22 @@ export default class App extends Component {
     get(url, (data) => {
       var playlists = this.state.playlists || [];
       playlists = _.union(playlists, data.items);
-      console.log("playlist", data);
-      this.setState({
-        playlists: playlists,
-        playlistOffset: this.state.playlistOffset + 10,
-        next_href: data.next
-      });
+
+      if(data.error){
+        console.log("Spotify Error", data.error);
+        if(data.error.status === 401){
+          this.setState({
+
+          })
+        }
+      }else{
+        console.log("playlist", data);
+        this.setState({
+          playlists: playlists,
+          playlistOffset: this.state.playlistOffset + 10,
+          next_href: data.next
+        });
+      }
     });
   }
 
@@ -65,7 +75,7 @@ export default class App extends Component {
       <header>
         <p>Get your <b>Spotify</b> playlists on <b>SoundCloud Go</b>!</p>
         <a className={"step step-1 " + (this.state.playlists ? "step-done" : "")} href={spotifyUrl}>Connect to Spotify.</a>
-        <a className={"step step-2 " + (this.props.soundcloudToken ? "step-done" : "")} href={soundcloudUrl}>Connect to SoundCloud.</a>
+        <a className={"step step-2 " + ((this.state.playlists && this.props.soundcloudToken) ? "step-done" : "")} href={soundcloudUrl}>Connect to SoundCloud.</a>
         <a className="step step-3">Pick your playlists:</a>
       </header>
       {_.map(this.state.playlists || [], (playlist) => {
