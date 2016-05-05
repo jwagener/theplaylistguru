@@ -98,6 +98,14 @@
         content: '3';
       }
 
+      .playlists {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
+
       .playlist-name {
         font-size: 16px;
         color: #333;
@@ -167,10 +175,10 @@
       }
 
       .playlist-wrapper {
-        display: inline-block;
-        width: 10rem;
+        width: 9rem;
         margin: 1rem;
       }
+
       .step-done {
          text-decoration: line-through;
       }
@@ -187,6 +195,24 @@
         display: inline-block;
       }
 
+
+      .load-more {
+        text-align: center;
+        margin: auto;
+        background-color: #333;
+        color: #f0dc01;
+        padding: 0.5rem 1rem;
+        border: 0;
+        font-size: 24px;
+        text-transform: uppercase;
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+
+      .load-more:hover {
+        background-color: #444;
+        cursor: pointer;
+      }
 
       .loader {
         margin: 100px auto;

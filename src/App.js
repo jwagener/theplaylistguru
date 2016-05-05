@@ -80,11 +80,14 @@ export default class App extends Component {
         <a className={"step step-2 " + ((this.state.playlists && this.props.soundcloudToken) ? "step-done" : "")} href={soundcloudUrl}>Connect to SoundCloud.</a>
         <a className="step step-3">Pick your playlists:</a>
       </header>
-      {_.map(this.state.playlists || [], (playlist) => {
-        return <Playlist key={playlist.id} spotifyToken={this.props.spotifyToken} soundcloudToken={this.props.soundcloudToken} playlist={playlist} />
-      })}
 
-      { this.state.next_href ? <button onClick={this.handleMoreClick.bind(this)}>more...</button> : "" }
+      <div className="playlists">
+        {_.map(this.state.playlists || [], (playlist) => {
+          return <Playlist key={playlist.id} spotifyToken={this.props.spotifyToken} soundcloudToken={this.props.soundcloudToken} playlist={playlist} />
+        })}
+      </div>
+
+      { this.state.next_href ? <button className="load-more" onClick={this.handleMoreClick.bind(this)}>load more...</button> : "" }
     </div>
 
   }
