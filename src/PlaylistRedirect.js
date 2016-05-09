@@ -13,14 +13,14 @@ export default class PlaylistRedirect extends Component {
   }
 
   createSoundCloudPlaylist() {
-    //alert("creating playlist with ids", this.state.soundcloudTrackIds.join(', '));
     var playlistObj = {
       title: this.props.name,
       sharing: 'private',
-      description: "Playlist created with http://spotify-soundcloud.herokuapp.com. List of missing tracks: ..."
+      description: "This playlist was made with <a href='http://theplaylist.guru'>The Playlist Guru</a>. These tracks are missing: ...",
+      tag_list: "spotify:id=" + this.props.id
     };
-
-    playlistObj.tracks = _.map(this.props.trackIds, (trackId) => {
+    var trackIds = this.props.trackIds.split(",")
+    playlistObj.tracks = _.map(trackIds, (trackId) => {
       return {
         id: trackId
       };
@@ -34,7 +34,6 @@ export default class PlaylistRedirect extends Component {
   render(){
     return <div>
       <div className="loader"></div>
-      <span className="status">creating playlist...</span>
     </div>
   }
 }

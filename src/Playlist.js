@@ -5,7 +5,6 @@ import _ from 'underscore';
 export default class Playlist extends Component {
   constructor(){
     super(...arguments);
-    console.log(this.props.playlist);
     this.state = {
       selected: false,
       spotifyTrackCount: null,
@@ -49,22 +48,21 @@ export default class Playlist extends Component {
     var playlist = this.props.playlist;
     var className= `playlist cf ${this.state.selected ? "playlist-selected" : ""}`;
     var href = playlist.tracks.href;
-    if(this.state.soundcloudPlaylist){
-      href = this.state.soundcloudPlaylist.permalink_url;
+    if(this.props.soundcloudPlaylist){
+      href = this.props.soundcloudPlaylist.permalink_url;
       className += " playlist-imported"
+    }else{
+      href = "/playlist?id=" + this.props.playlist.id + "&name=" + encodeURIComponent(this.props.playlist.name) + "&trackIds=" + this.state.soundcloudTrackIds.join(",")
     }
-
-    href = "/playlist?name=" + encodeURIComponent(this.props.playlist.name) + "&trackIds=" + this.state.soundcloudTrackIds.join(",")
 
     return <div className="playlist-wrapper">
       <a href={href} target="_blank" playlist={playlist} className={className}>
-        <span className='playlist-ratio'>
-          <span className="playlist-soundcloud-track-count">{this.state.soundcloudTrackCount}</span>
-          &nbsp;/&nbsp;
-          <span className="playlist-spotify-track-count">{this.state.spotifyTrackCount}</span>
-        </span>
         <img className="playlist-image" src={playlist.images.length > 0 ? playlist.images[0].url : ""} />
         <span className="playlist-name">{playlist.name}</span>
+        <span className="playlist-info">
+          {this.state.spotifyTrackCount} tracks {this.state.soundcloudTrackCount} are on SoundCloud.
+        </span>
+
       </a>
     </div>
   }

@@ -3,22 +3,21 @@ var request = require('superagent')
 import _ from 'underscore'
 import Playlist from './Playlist'
 
-//var SPOTIFY_TOKEN;
 window.SPOTIFY_TOKEN = null;
-//var SOUNDCLOUD_TOKEN = '1-234617-3207-a064dad6aed93c5da0';
-//SC.initialize({oauth_token: SOUNDCLOUD_TOKEN});
+window.SOUNDCLOUD_TOKEN = null;
 
 export default class App extends Component {
   constructor() {
     super(...arguments);
     this.state = {
-      playlistOffset: 0
+      playlistOffset: 0,
+      playlistMap: {}
     };
   }
 
   componentDidMount() {
     if(this.props.soundcloudToken){
-      console.log("init sc client", this.props);
+      window.SPOTIFY_TOKEN = this.props.soundcloudToken; // global state ftw!
       SC.initialize({oauth_token: this.props.soundcloudToken});
     }
 
@@ -30,6 +29,19 @@ export default class App extends Component {
 
   loadPlaylists(url){
     console.log("load playlists");
+    SC.get("/me/playlists?limit=200").then((res) => {
+      var playlistMap = {};
+      _.map(res, (playlist) => {
+        var match = playlist.tag_list.match(/spotify:id=([^ ]*)/)
+        if(match && match[1]){
+          console.log(playlist.tag_list)
+          playlistMap[match[1]] = playlist
+        }
+      });
+      this.setState({playlistMap: playlistMap})
+      console.log("SC play list", res, playlistMap);
+    });
+
     url = url || "https://api.spotify.com/v1/me/playlists?limit=10&offset=" + this.state.playlistOffset;
     get(url, (data) => {
       var playlists = this.state.playlists || [];
@@ -43,7 +55,6 @@ export default class App extends Component {
           })
         }
       }else{
-        console.log("playlist", data);
         this.setState({
           playlists: playlists,
           playlistOffset: this.state.playlistOffset + 10,
@@ -57,11 +68,14 @@ export default class App extends Component {
     this.loadPlaylists(this.state.next_href)
   }
 
-  render() {
+  spotifyConnectUrl() {
     var spotifyUrl = "https://accounts.spotify.com/authorize?client_id=8bd399434dcf455eb66fdb500adb7288&";
     spotifyUrl += "redirect_uri=" + encodeURIComponent(window.location.origin) + '/';
     spotifyUrl += "&scope=user-read-private%20user-read-email%20playlist-read-private&response_type=token&state=123";
+    return spotifyUrl;
+  }
 
+  soundcloudConnectUrl() {
     var soundcloudUrl = "https://soundcloud.com/connect?response_type=token&scope=non-expiring&";
     if(window.location.origin === "http://spotify-soundcloud.dev") {
       soundcloudUrl += "client_id=d3a34949dd2df66660737dcc0ea79336&";
@@ -69,21 +83,21 @@ export default class App extends Component {
       soundcloudUrl += "client_id=2a29b786d884f77413df3e163c63ea7e&";
     }
     soundcloudUrl += "redirect_uri=" + encodeURIComponent(window.location.origin) + '/&';
+    return soundcloudUrl
+  }
 
-
-    //      <div className="logo">	&#127820; 	&#x1f34c; sdf</div>
-
+  render() {
     return <div className="home">
       <header>
-        <p>Get your <b>Spotify</b> playlists on <b>SoundCloud Go</b>!</p>
-        <a className={"step step-1 " + (this.state.playlists ? "step-done" : "")} href={spotifyUrl}>Connect to Spotify.</a>
-        <a className={"step step-2 " + ((this.state.playlists && this.props.soundcloudToken) ? "step-done" : "")} href={soundcloudUrl}>Connect to SoundCloud.</a>
+        <p><b>The Playlist Guru</b> helps you<br/> find your <b>Spotify</b> music on <b>SoundCloud Go</b>!</p>
+        <a className={"step step-1 " + (this.state.playlists ? "step-done" : "")} href={this.spotifyConnectUrl()}>Connect to Spotify.</a>
+        <a className={"step step-2 " + ((this.state.playlists && this.props.soundcloudToken) ? "step-done" : "")} href={this.soundcloudConnectUrl()}>Connect to SoundCloud.</a>
         <a className="step step-3">Pick your playlists:</a>
       </header>
 
       <div className="playlists">
         {_.map(this.state.playlists || [], (playlist) => {
-          return <Playlist key={playlist.id} spotifyToken={this.props.spotifyToken} soundcloudToken={this.props.soundcloudToken} playlist={playlist} />
+          return <Playlist key={playlist.id} spotifyToken={this.props.spotifyToken} soundcloudToken={this.props.soundcloudToken} playlist={playlist} soundcloudPlaylist={this.state.playlistMap[playlist.id]} />
         })}
       </div>
 
@@ -93,8 +107,14 @@ export default class App extends Component {
   }
 }
 
-
 function get(url, cb){
+  request.get(url).set('Authorization', 'Bearer ' + SPOTIFY_TOKEN ).end((err, res) => {
+    var data = JSON.parse(res.text);
+    cb(data);
+  });
+}
+
+function soundcloudGet(url, cb){
   request.get(url).set('Authorization', 'Bearer ' + SPOTIFY_TOKEN ).end((err, res) => {
     var data = JSON.parse(res.text);
     cb(data);

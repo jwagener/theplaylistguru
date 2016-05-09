@@ -12,10 +12,8 @@ if(window.location.hash.toString().indexOf("access_token") !== -1) {
   var token = parts[1];
 
   if(window.location.hash.toString().indexOf("non-expiring") !== -1) {
-    console.log("SC token:", token);
     localStorage.setItem("soundcloudToken", token);
   }else{
-    console.log("Spotify token:", token);
     localStorage.setItem("spotifyToken", token);
   }
 }
@@ -27,8 +25,7 @@ var spotifyToken = localStorage.getItem("spotifyToken");
 if(window.location.pathname === "/playlist"){
   var uri = new URI(window.location.toString())
   var params = uri.search(true)
-  var trackIds = params.trackIds.split(",")
-  ReactDOM.render(<PlaylistRedirect spotifyToken={spotifyToken} soundcloudToken={soundcloudToken} trackIds={trackIds} name={params.name} />, document.getElementById('root'));
+  ReactDOM.render(<PlaylistRedirect spotifyToken={spotifyToken} soundcloudToken={soundcloudToken} {...params}/>, document.getElementById('root'));
 }else{
   ReactDOM.render(<App spotifyToken={spotifyToken} soundcloudToken={soundcloudToken} />, document.getElementById('root'));
 }

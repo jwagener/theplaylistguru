@@ -1,8 +1,10 @@
 <!doctype html>
 <html>
   <head>
-    <title>Spotify || SoundCloud</title>
+    <title>The Playlist Guru</title>
     <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name=description content="Move your Spotify playlists to SoundCloud Go">
+    <meta name=keywords content="soundcloud playlists music album import export sync synch copy move">
 
     <style>
     html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin: 0; padding: 0; border: 0; outline: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit;}
@@ -56,8 +58,13 @@
 
       @media (max-width: 600px) {
         body {
-          padding: 0.5rem;
+          padding: 0rem;
         }
+      }
+
+      #root {
+        max-width: 100vw;
+        overflow: hidden;
       }
 
       body, a:link, a:visited, a:hover {
@@ -71,6 +78,7 @@
 
       header {
         width: 400px;
+        max-width: 100vw;
         margin: auto;
       }
 
@@ -107,7 +115,8 @@
       }
 
       .playlist-name {
-        font-size: 16px;
+        font-size: 18px;
+        font-weight: bold;
         color: #333;
         display: block;
         width: 100%;
@@ -116,26 +125,65 @@
         text-overflow: ellipsis;
       }
 
+      .playlist:hover .playlist-name {
+        text-decoration: underline;
+      }
+
       .playlist-name:before {
         content: '♫';
         display: inline-block;
         margin-right: 0.4rem;
+        font-size: 48px;
         font-weight: bold;
       }
 
       .playlist-image {
-        width: 100%;
-        height: auto;
-        width: 9rem;
-        height: 9rem;
+        width: 21rem;
+        height: 21rem;
       }
 
       .playlist-ratio {
         font-size: 18px;
         position: absolute;
-        right: 16px;
-        bottom: 14px;
+        right: -10px;
+        top: -130px;
         color: #84bd00;
+        background-color: #333;
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        font-size: 14px;
+        overflow: hidden;
+        border: 1px solid #333;
+      }
+      .playlist-ratio span {
+        width: 50%;
+        position: absolute;
+      }
+      .playlist-ratio span:nth-child(1) {
+        top: 11px;
+        left: 1px;
+        text-align: center;
+      }
+
+      .playlist-ratio span:nth-child(2) {
+        top: 15px;
+        text-align: center;
+        left: 0;
+        width: 100%;
+        color: #f0f0f0;
+        font-size: 18px;
+      }
+
+      .playlist-ratio span:nth-child(3) {
+        left: 47%;
+        top: 26px;
+        text-align: center;
+
+      }
+
+      .playlist-info {
+        font-size: 16px;
       }
 
       .playlist-spotify-track-count {
@@ -155,15 +203,17 @@
         opacity: 0.2;
       }
 
-      .playlist:hover:before {
-        content: 'Create on SoundCloud';
+      .playlist:hover:before, .playlist:active:before {
+        content: 'Listen on SoundCloud';
         position: absolute;
-        top: -90px; bottom: 0; left: 0; right: 0;
+        top: -10rem; bottom: 0; left: 0; right: 0;
+        width: 100%;
         text-align: center;
-        color:  #333;
+        color:  black;
+        font-weight: bold;
       }
 
-      .playlist-imported:hover:before {
+      .XXXplaylist-imported:hover:before {
         content: 'Open on SoundCloud';
         position: absolute;
         top: -90px; bottom: 0; left: 0; right: 0;
@@ -177,8 +227,7 @@
       }
 
       .playlist-wrapper {
-        width: 9rem;
-        height: 11rem;
+        width: 21rem;
         margin: 1rem;
       }
 
