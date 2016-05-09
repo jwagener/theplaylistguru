@@ -49,7 +49,7 @@ export default class Playlist extends Component {
     var className= `playlist cf ${this.state.selected ? "playlist-selected" : ""}`;
     var href = playlist.tracks.href;
     if(this.props.soundcloudPlaylist){
-      href = this.props.soundcloudPlaylist.permalink_url;
+      href = this.props.soundcloudPlaylist.permalink_url + "/" + this.props.soundcloudPlaylist.secret_token;
       className += " playlist-imported"
     }else{
       href = "/playlist?id=" + this.props.playlist.id + "&name=" + encodeURIComponent(this.props.playlist.name) + "&trackIds=" + this.state.soundcloudTrackIds.join(",")
@@ -60,7 +60,7 @@ export default class Playlist extends Component {
         <img className="playlist-image" src={playlist.images.length > 0 ? playlist.images[0].url : ""} />
         <span className="playlist-name">{playlist.name}</span>
         <span className="playlist-info">
-          {this.state.spotifyTrackCount} tracks {this.state.soundcloudTrackCount} are on SoundCloud.
+          <b>{this.state.spotifyTrackCount} tracks.</b> {this.state.soundcloudTrackCount} are on SoundCloud.
         </span>
 
       </a>
