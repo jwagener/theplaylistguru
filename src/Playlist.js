@@ -22,7 +22,7 @@ export default class Playlist extends Component {
     var soundcloudTrackIds = this.state.soundcloudTrackIds;
     get(spotifyTracksUrl, (res) => {
       var lookupUrl = '/lookup?';
-      this.setState({spotifyTrackCount: res.items.length});
+      this.setState({tracks: _.map(res.items, "track"),spotifyTrackCount: res.items.length});
       var isrc = _.map(res.items, (item) => {
         lookupUrl += 'isrc[]=' + item.track.external_ids.isrc + '&';
         return item.track.external_ids.isrc;
@@ -63,7 +63,14 @@ export default class Playlist extends Component {
           <div className="playlist-name">{playlist.name}</div>
           <div className="playlist-info">
             <b>♫ {this.state.spotifyTrackCount} tracks</b> with {this.state.soundcloudTrackCount} on SoundCloud.
+            <ol className="hidden">
+              {_.map(this.state.tracks, (track) => {
+                return <li>{track.name}</li>
+              })}
+            </ol>
+
           </div>
+
         </div>
       </a>
     </div>

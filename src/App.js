@@ -5,6 +5,14 @@ import Playlist from './Playlist'
 
 window.SPOTIFY_TOKEN = null;
 window.SOUNDCLOUD_TOKEN = null;
+window.Spotify = {
+  get: function (url, cb){
+    request.get(url).set('Authorization', 'Bearer ' + SPOTIFY_TOKEN ).end((err, res) => {
+      var data = JSON.parse(res.text);
+      cb(data);
+    });
+  }
+};
 
 export default class App extends Component {
   constructor() {
@@ -25,6 +33,15 @@ export default class App extends Component {
       window.SPOTIFY_TOKEN = this.props.spotifyToken; // global state ftw!
       this.loadPlaylists();
     }
+
+    window.onscroll = this.handleScroll.bind(this)
+  }
+
+  handleScroll(e) {
+    var scrolledToBottom = window.scrollY + window.innerHeight >= document.body.scrollHeight
+    if(scrolledToBottom && this.state.next_href) {
+      this.handleMoreClick()
+    }
   }
 
   loadPlaylists(url){
@@ -43,7 +60,7 @@ export default class App extends Component {
     });
 
     url = url || "https://api.spotify.com/v1/me/playlists?limit=10&offset=" + this.state.playlistOffset;
-    get(url, (data) => {
+    Spotify.get(url, (data) => {
       var playlists = this.state.playlists || [];
       playlists = _.union(playlists, data.items);
 
@@ -101,22 +118,8 @@ export default class App extends Component {
         })}
       </div>
 
-      { this.state.next_href ? <button className="load-more" onClick={this.handleMoreClick.bind(this)}>load more...</button> : "" }
+      { this.state.next_href ? <button className="load-more" onClick={this.handleMoreClick.bind(this)}>load more playlists...</button> : "" }
     </div>
 
   }
-}
-
-function get(url, cb){
-  request.get(url).set('Authorization', 'Bearer ' + SPOTIFY_TOKEN ).end((err, res) => {
-    var data = JSON.parse(res.text);
-    cb(data);
-  });
-}
-
-function soundcloudGet(url, cb){
-  request.get(url).set('Authorization', 'Bearer ' + SPOTIFY_TOKEN ).end((err, res) => {
-    var data = JSON.parse(res.text);
-    cb(data);
-  });
 }

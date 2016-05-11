@@ -30,6 +30,10 @@ hr {display: none; visibility: hidden;}
     *zoom: 1;
 }
 
+.hidden {
+  display: none;
+}
+
 body {
   background-color: #ffdc01;
   width: 100vw;
