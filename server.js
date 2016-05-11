@@ -3,9 +3,10 @@ var express = require('express');
 var child_process = require('child_process');
 var _ = require('underscore');
 var app = express();
-//var WebpackDevServer = require('webpack-dev-server');
+
 var webpackConfig = require(process.env.NODE_ENV === "production" ? './webpack.config.prod' : './webpack.config.dev');
 app.use(require('webpack-dev-middleware')(webpack(webpackConfig), {noInfo: true, publicPath: webpackConfig.output.publicPath}));
+app.use(express.static('static'));
 
 app.get('/lookup', function(request, response) {
   var isrcMap = {};

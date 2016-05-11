@@ -57,12 +57,14 @@ export default class Playlist extends Component {
 
     return <div className="playlist-wrapper">
       <a href={href} target="_blank" playlist={playlist} className={className}>
-        <img className="playlist-image" src={playlist.images.length > 0 ? playlist.images[0].url : ""} />
-        <span className="playlist-name">{playlist.name}</span>
-        <span className="playlist-info">
-          <b>{this.state.spotifyTrackCount} tracks.</b> {this.state.soundcloudTrackCount} are on SoundCloud.
-        </span>
-
+        <img className="cf playlist-image" src={playlist.images.length > 0 ? playlist.images[0].url : ""} />
+        <button>{ this.props.soundcloudPlaylist ? "Open" : "Add"}</button>
+        <div className="playlist-text">
+          <div className="playlist-name">{playlist.name}</div>
+          <div className="playlist-info">
+            <b>♫ {this.state.spotifyTrackCount} tracks</b> with {this.state.soundcloudTrackCount} on SoundCloud.
+          </div>
+        </div>
       </a>
     </div>
   }
