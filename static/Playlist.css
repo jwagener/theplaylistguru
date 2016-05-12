@@ -3,7 +3,7 @@
   margin: 1rem;
   position: relative;
   border: 3px solid #333;
-  padding: 0.25rem;
+  padding: 3px;
 }
 
 .playlist {
@@ -21,10 +21,10 @@
 
 .playlist-text {
   position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
+  top: 6px;
+  left: 6px;
   background-color: white;
-  padding: 0.5rem;
+  padding: 6px;
   border: 3px solid #ffd500;
   max-width: 90%;
 }
@@ -49,10 +49,9 @@
   background-color: #333;
   color: #ffd500;
   position: absolute;
-  right: 0.5rem;
-  bottom: 0.5rem;
-  border: 2px solid #ffd500;
-  border-radius: 2px;
+  right: 6px;
+  bottom: 6px;
+  border: 3px solid #ffd500;
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
