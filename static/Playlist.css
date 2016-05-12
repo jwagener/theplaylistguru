@@ -25,7 +25,7 @@
   left: 0.5rem;
   background-color: white;
   padding: 0.5rem;
-  border: 3px solid #ffdc00;
+  border: 3px solid #ffd500;
   max-width: 90%;
 }
 
@@ -47,11 +47,11 @@
 .playlist-wrapper button {
   padding: 0.5rem 1.5rem;
   background-color: #333;
-  color: #ffdc00;
+  color: #ffd500;
   position: absolute;
   right: 0.5rem;
   bottom: 0.5rem;
-  border: 2px solid #ffdc00;
+  border: 2px solid #ffd500;
   border-radius: 2px;
   font-size: 18px;
   font-weight: bold;

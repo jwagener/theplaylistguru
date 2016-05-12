@@ -35,7 +35,7 @@ hr {display: none; visibility: hidden;}
 }
 
 body {
-  background-color: #ffdc01;
+  background-color: #ffd500;
   width: 100vw;
   height: 100vh;
   font-size: 16px;
@@ -76,14 +76,15 @@ header p {
 
 .step {
   display: block;
-  margin: 1rem 0 ;
+  margin: 1rem 0;
+  white-space: nowrap;
 }
 
 .step:before {
   content: '1';
   border-radius: 50%;
   background-color: #333;
-  color: #ffdc01;
+  color: #ffd500;
   width: 2rem;
   height: 2rem;
   display: inline-block;
