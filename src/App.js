@@ -104,12 +104,22 @@ export default class App extends Component {
   }
 
   render() {
-    return <div className="home">
+    var step = 1
+    if(this.state.playlists){
+      step = 2
+      if(this.props.soundcloudToken){
+        step = 3
+      }
+    }
+    var className = "home current-step-" + step
+
+
+    return <div className={className}>
       <header>
         <p><b>The Playlist Guru</b> lets you<br/> copy your <b>Spotify</b> playlists to <b>SoundCloud Go</b>!</p>
-        <a className={"step step-1 " + (this.state.playlists ? "step-done" : "")} href={this.spotifyConnectUrl()}>Connect to Spotify.</a>
-        <a className={"step step-2 " + ((this.state.playlists && this.props.soundcloudToken) ? "step-done" : "")} href={this.soundcloudConnectUrl()}>Connect to SoundCloud.</a>
-        <a className="step step-3">Pick your playlists:</a>
+        <a className={"step step-1 "} href={this.spotifyConnectUrl()}>Connect to Spotify.</a>
+        <a className={"step step-2 "} href={this.soundcloudConnectUrl()}>Connect to SoundCloud.</a>
+        <a className="step step-3">Pick your playlists.</a>
       </header>
 
       <div className="playlists">

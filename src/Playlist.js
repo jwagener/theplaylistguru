@@ -55,10 +55,9 @@ export default class Playlist extends Component {
       href = "/playlist?id=" + this.props.playlist.id + "&name=" + encodeURIComponent(this.props.playlist.name) + "&trackIds=" + this.state.soundcloudTrackIds.join(",")
     }
 
-    return <div className="playlist-wrapper">
-      <a href={href} target="_blank" playlist={playlist} className={className}>
+    return <div href={href} target="_blank" playlist={playlist} className={className}>
         <img className="cf playlist-image" src={playlist.images.length > 0 ? playlist.images[0].url : ""} />
-        <button>{ this.props.soundcloudPlaylist ? "Open" : "Add"}</button>
+        <a className="open" href={href} target="_blank" >{ this.props.soundcloudPlaylist ? "Open" : "Add"}</a>
         <div className="playlist-text">
           <div className="playlist-name">{playlist.name}</div>
           <div className="playlist-info">
@@ -72,7 +71,6 @@ export default class Playlist extends Component {
           </div>
 
         </div>
-      </a>
     </div>
   }
 }
