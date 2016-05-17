@@ -203,3 +203,10 @@ body {
 .step:before, .playlist .open, .load-more {
   color: rgba(255, 140, 110, 1.0);
 }
+
+
+h1 {
+  font-family: 'Kaushan Script', cursive;
+  font-size: 44px;
+  margin-bottom: 1rem;
+}

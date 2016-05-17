@@ -16,7 +16,7 @@ export default class PlaylistRedirect extends Component {
     var playlistObj = {
       title: this.props.name,
       sharing: 'private',
-      description: "This playlist was made with <a href='http://theplaylist.guru'>The Playlist Guru</a>. These tracks are missing: ...",
+      description: "Created with with <a href='http://theplaylist.guru'>The Playlist Guru</a>.",
       tag_list: "spotify:id=" + this.props.id
     };
     var trackIds = this.props.trackIds.split(",")

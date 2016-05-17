@@ -116,7 +116,8 @@ export default class App extends Component {
 
     return <div className={className}>
       <header>
-        <p><b>The Playlist Guru</b> lets you<br/> copy your <b>Spotify</b> playlists to <b>SoundCloud Go</b>!</p>
+        <h1>The Playlist Guru</h1>
+        <p>Add your <b>Spotify</b> playlists to <b>SoundCloud Go</b> in 3 steps:</p>
         <a className={"step step-1 "} href={this.spotifyConnectUrl()}>Connect to Spotify.</a>
         <a className={"step step-2 "} href={this.soundcloudConnectUrl()}>Connect to SoundCloud.</a>
         <a className="step step-3">Pick your playlists.</a>
