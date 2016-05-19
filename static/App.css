@@ -121,7 +121,6 @@ header p {
 /* loader */
 
 .loader {
-  margin: 100px auto;
   font-size: 25px;
   width: 1em;
   height: 1em;
@@ -133,6 +132,11 @@ header p {
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);
+  position: absolute;
+  left: 50vw;
+  margin-left: -0.5em;
+  top: 50vh;
+  margin-top: -0.5em;
 }
 
 @-webkit-keyframes load5 {
