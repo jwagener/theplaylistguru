@@ -110,6 +110,15 @@ export default class App extends Component {
     return soundcloudUrl
   }
 
+  trackLink(name) {
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Link',
+      eventAction: 'click',
+      eventLabel: name
+    });
+  }
+
   render() {
     var step = 1
     if(this.state.playlists){
@@ -125,8 +134,8 @@ export default class App extends Component {
       <header>
         <h1>The Playlist Guru</h1>
         <p>Add your <b>Spotify</b> playlists to <b>SoundCloud Go</b> in 3 steps:</p>
-        <a className={"step step-1 "} href={this.spotifyConnectUrl()}>Connect to Spotify.</a>
-        <a className={"step step-2 "} href={this.soundcloudConnectUrl()}>Connect to SoundCloud.</a>
+        <a className={"step step-1 "} href={this.spotifyConnectUrl()} onClick={this.trackLink.bind(this, "Connect Spotify")}>Connect to Spotify.</a>
+        <a className={"step step-2 "} href={this.soundcloudConnectUrl()} onClick={this.trackLink.bind(this, "Connect SoundCloud")}>Connect to SoundCloud.</a>
         <a className="step step-3">Pick your playlists.</a>
       </header>
 

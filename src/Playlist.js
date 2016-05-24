@@ -39,8 +39,16 @@ export default class Playlist extends Component {
           soundcloudTrackCount: soundcloudTrackIds.length,
           soundcloudTrackIds: soundcloudTrackIds
         });
-
       });
+    });
+  }
+
+  trackLink(name) {
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Link',
+      eventAction: 'click',
+      eventLabel: name
     });
   }
 
@@ -57,7 +65,7 @@ export default class Playlist extends Component {
 
     return <div href={href} target="_blank" playlist={playlist} className={className}>
         <img className="cf playlist-image" src={playlist.images.length > 0 ? playlist.images[0].url : ""} />
-        <a className="open" href={href} target="_blank" >{ this.props.soundcloudPlaylist ? "Open" : "Add"}</a>
+        <a className="open" href={href} target="_blank" onClick={this.trackLink.bind(this, this.props.soundcloudPlaylist ? "Open Playlist" : "Add Playlist" )}>{ this.props.soundcloudPlaylist ? "Open" : "Add" }</a>
         <div className="playlist-text">
           <div className="playlist-name">{playlist.name}</div>
           <div className="playlist-info">
@@ -67,9 +75,7 @@ export default class Playlist extends Component {
                 return <li>{track.name}</li>
               })}
             </ol>
-
           </div>
-
         </div>
     </div>
   }
