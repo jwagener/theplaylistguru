@@ -113,9 +113,8 @@ export default class App extends Component {
   trackLink(name) {
     ga('send', {
       hitType: 'event',
-      eventCategory: 'Link',
-      eventAction: 'click',
-      eventLabel: name
+      eventCategory: name,
+      eventAction: 'click'
     });
   }
 

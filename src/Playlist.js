@@ -46,9 +46,8 @@ export default class Playlist extends Component {
   trackLink(name) {
     ga('send', {
       hitType: 'event',
-      eventCategory: 'Link',
-      eventAction: 'click',
-      eventLabel: name
+      eventCategory: name,
+      eventAction: 'click'
     });
   }
 
