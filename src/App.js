@@ -45,17 +45,24 @@ export default class App extends Component {
   }
 
   loadPlaylists(url){
-    console.log("load playlists");
     SC.get("/me/playlists", {limit: 200, representation: "compact"}).then((res) => {
       var playlistMap = {};
       _.map(res, (playlist) => {
         var match = playlist.tag_list.match(/spotify:id=([^ ]*)/)
         if(match && match[1]){
-          console.log(playlist.tag_list)
+          //console.log(playlist.tag_list)
           playlistMap[match[1]] = playlist
         }
       });
       this.setState({playlistMap: playlistMap})
+
+      ga('send', {
+        hitType: 'event',
+        eventCategory: 'Playlists',
+        eventAction: 'load',
+        eventLabel: ''
+      });
+
       console.log("SC play list", res, playlistMap);
     });
 

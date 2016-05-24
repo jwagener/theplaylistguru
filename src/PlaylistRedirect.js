@@ -28,6 +28,12 @@ export default class PlaylistRedirect extends Component {
 
     SC.post('/playlists?oauth_token=' + this.props.soundcloudToken + '&bla', {playlist: playlistObj}).then((res) => {
       window.location = res.permalink_url + "/" + res.secret_token;
+      ga('send', {
+        hitType: 'event',
+        eventCategory: 'Playlist',
+        eventAction: 'synced',
+        eventLabel: res.permalink_url
+      });
     });
   }
 
