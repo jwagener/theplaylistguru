@@ -116,6 +116,7 @@ export default class App extends Component {
       eventCategory: name,
       eventAction: 'click'
     });
+    handleTypeChange(e){
   }
 
   render() {

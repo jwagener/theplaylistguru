@@ -34,13 +34,46 @@ hr {display: none; visibility: hidden;}
   display: none;
 }
 
+@font-face {
+  font-family: "Avenir Next";
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  src: url(/fonts/AvenirNext-Regular.ttf);
+}
+
+@font-face {
+  font-family: "Avenir Next";
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  src: url(/fonts/AvenirNext-Medium.ttf);
+}
+
+@font-face {
+  font-family: "Avenir Next";
+  font-weight: 200;
+  font-stretch: normal;
+  font-style: normal;
+  src: url(/fonts/AvenirNext-Thin.ttf);
+}
+
+@font-face {
+  font-family: "Avenir Next";
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: italic;
+  src: url(/fonts/AvenirNext-Italic.ttf);
+}
+
+
 body {
   background-color: #ffd500;
   width: 100vw;
   height: 100vh;
   font-size: 16px;
   padding: 4rem;
-  font-family: "Avenir";
+  font-family: "Avenir Next", "Avenir";
 }
 
 @media (max-width: 600px) {
@@ -71,7 +104,7 @@ header {
 }
 
 header p {
-  margin-bottom: 1rem;
+  font-weight: 200;
 }
 
 .step {
@@ -193,6 +226,16 @@ header p {
     box-shadow: 0em -2.6em 0em 0em rgba(0, 0, 0, 0.2), 1.8em -1.8em 0 0em rgba(0, 0, 0, 0.2), 2.5em 0em 0 0em rgba(0, 0, 0, 0.2), 1.75em 1.75em 0 0em rgba(0, 0, 0, 0.2), 0em 2.5em 0 0em rgba(0, 0, 0, 0.2), -1.8em 1.8em 0 0em rgba(0, 0, 0, 0.5), -2.6em 0em 0 0em rgba(0, 0, 0, 0.7), -1.8em -1.8em 0 0em #333;
   }
 }
+
+.type-select {
+  font-size: inherit;
+  background-color: transparent;
+  border: 0;
+  color: #222;
+  font-weight: 300;
+
+}
+
 
 /* colors */
 
