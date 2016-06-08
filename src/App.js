@@ -19,7 +19,8 @@ export default class App extends Component {
     super(...arguments);
     this.state = {
       playlistOffset: 0,
-      playlistMap: {}
+      playlistMap: {},
+      soundcloudToken: this.props.soundcloudToken
     };
   }
 
@@ -64,6 +65,14 @@ export default class App extends Component {
       });
 
       console.log("SC play list", res, playlistMap);
+    }).catch((e) => {
+      console.log("SC.get error:", e)
+      SOUNDCLOUD_TOKEN = null;
+      localStorage.removeItem("soundcloudToken");
+
+      this.setState({
+        soundcloudToken: null
+      })
     });
 
     url = url || "https://api.spotify.com/v1/me/playlists?limit=10&offset=" + this.state.playlistOffset;
@@ -116,14 +125,14 @@ export default class App extends Component {
       eventCategory: name,
       eventAction: 'click'
     });
-    handleTypeChange(e){
+    //handleTypeChange(e)
   }
 
   render() {
     var step = 1
     if(this.state.playlists){
       step = 2
-      if(this.props.soundcloudToken){
+      if(this.state.soundcloudToken){
         step = 3
       }
     }
