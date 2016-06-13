@@ -9,7 +9,7 @@ export default class PlaylistRedirect extends Component {
   }
 
   componentDidMount(){
-    //this.createSoundCloudPlaylist()
+    this.createSoundCloudPlaylist()
   }
 
   createSoundCloudPlaylist() {
